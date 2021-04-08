@@ -30,9 +30,9 @@ class GroundControlService(
                 log.info("Found ground control with key: ${receivedMessage.vertexFrom}${receivedMessage.vertexTo}")
                 rabbitTemplate.convertAndSend(
                     "movementPermission",
-                    receivedMessage.apply {
+                    mapper.writeValueAsString(receivedMessage.apply {
                         isPermitted = false
-                    }
+                    })
                 )
                 log.info("Successful send to vehicleId: ${receivedMessage.vehicleId}")
             } else {
@@ -40,9 +40,9 @@ class GroundControlService(
                 log.info("Put ground control with key: ${receivedMessage.vertexFrom}${receivedMessage.vertexTo} and value: ${receivedMessage.vehicleId}")
                 rabbitTemplate.convertAndSend(
                     "movementPermission",
-                    receivedMessage.apply {
+                    mapper.writeValueAsString(receivedMessage.apply {
                         isPermitted = true
-                    }
+                    })
                 )
                 log.info("Successful send to vehicleId: ${receivedMessage.vehicleId}")
             }
