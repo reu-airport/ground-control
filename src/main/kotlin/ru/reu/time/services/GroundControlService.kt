@@ -53,7 +53,7 @@ class GroundControlService(
     fun groundControl(message: String) {
         synchronized(this) {
             val receivedMessage = mapper.readValue(message, Movement::class.java)
-            log.info("Received message: $receivedMessage")
+            log.info("Received message on delete: $receivedMessage")
             groundControl.remove("${receivedMessage.vertexFrom}${receivedMessage.vertexTo}")
             groundControl.remove("${receivedMessage.vertexTo}${receivedMessage.vertexFrom}")
             log.info("Remove ground control with key: ${receivedMessage.vertexFrom}${receivedMessage.vertexTo}")
