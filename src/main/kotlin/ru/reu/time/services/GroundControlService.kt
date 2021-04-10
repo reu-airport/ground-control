@@ -26,7 +26,7 @@ class GroundControlService(
             val receivedMessage = mapper.readValue(message, Movement::class.java)
             log.info("Received message: $receivedMessage")
 
-            if (groundControl.containsKey("${receivedMessage.vertexFrom}${receivedMessage.vertexTo}")) {
+            if (groundControl.containsKey("${receivedMessage.vertexFrom}${receivedMessage.vertexTo}") || groundControl.containsKey("${receivedMessage.vertexTo}${receivedMessage.vertexFrom}")) {
                 log.info("Found ground control with key: ${receivedMessage.vertexFrom}${receivedMessage.vertexTo}")
                 rabbitTemplate.convertAndSend(
                     "movementPermission",
@@ -55,6 +55,7 @@ class GroundControlService(
             val receivedMessage = mapper.readValue(message, Movement::class.java)
             log.info("Received message: $receivedMessage")
             groundControl.remove("${receivedMessage.vertexFrom}${receivedMessage.vertexTo}")
+            groundControl.remove("${receivedMessage.vertexTo}${receivedMessage.vertexFrom}")
             log.info("Remove ground control with key: ${receivedMessage.vertexFrom}${receivedMessage.vertexTo}")
         }
     }
